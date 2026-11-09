@@ -4,10 +4,12 @@ import App from './App';
 import dashboardAPI from './services/dashboardAPI';
 import historicoAPI from './services/historicoAPI';
 import produtoAPI from './services/produtoAPI';
+import usuarioAPI from './services/usuarioAPI';
 
 jest.mock('./services/dashboardAPI', () => ({ obterAsync: jest.fn() }));
 jest.mock('./services/historicoAPI', () => ({ listarAsync: jest.fn() }));
 jest.mock('./services/produtoAPI', () => ({ buscarPorHistoricoAsync: jest.fn() }));
+jest.mock('./services/usuarioAPI');
 
 beforeEach(() => {
   localStorage.clear();
@@ -16,6 +18,8 @@ beforeEach(() => {
   dashboardAPI.obterAsync.mockResolvedValue({ totalBuscas: 3 });
   historicoAPI.listarAsync.mockResolvedValue([]);
   produtoAPI.buscarPorHistoricoAsync.mockResolvedValue([]);
+  usuarioAPI.obterAsync.mockResolvedValue({ id: 1, nome: 'Conta de teste', email: 'teste@example.invalid' });
+  usuarioAPI.obterFotoAsync.mockRejectedValue({ response: { status: 404 } });
 });
 
 test('mostra o login e permite acessar o cadastro', () => {

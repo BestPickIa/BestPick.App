@@ -1,9 +1,12 @@
 import style from "./Topbar.module.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Avatar } from '../Avatar/Avatar';
+import { useUsuario } from '../../contexts/UsuarioContext';
 import { MdLogout } from "react-icons/md";
 
 export function Topbar({ titulo }) {
     const navigate = useNavigate();
+    const { usuario } = useUsuario();
 
     function handleLogout() {
         localStorage.removeItem("token");
@@ -14,6 +17,10 @@ export function Topbar({ titulo }) {
         <div className={style.topbar_conteudo}>
             <h2>{titulo}</h2>
 
+            <div className={style.acoes}>
+            <Link to="/perfil" className={style.perfil} aria-label="Meu perfil">
+                <Avatar /><span>{usuario?.nome || 'Meu perfil'}</span>
+            </Link>
             <button
                 onClick={handleLogout}
                 className={style.botao_deslogar}
@@ -21,6 +28,7 @@ export function Topbar({ titulo }) {
             >
                 <MdLogout />
             </button>
+            </div>
         </div>
     );
 }

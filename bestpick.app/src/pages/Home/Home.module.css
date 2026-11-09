@@ -119,22 +119,13 @@
     word-break: break-word;
 }
 
-.respostaProdutos {
+.produtosDoChat {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 12px;
-}
-
-.respostaProdutos .mensagemBestPick {
-    align-self: flex-start;
-}
-
-.produtos {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    margin-left: 44px;
+    margin-top: -6px;
 }
 
 .mensagens::-webkit-scrollbar {
@@ -317,3 +308,4 @@
 @media (max-width: 520px) {
     .papelDeParede { grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 20px 12px; }
 }
+.avatarBestPick { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--bp-sidebar); color: var(--bp-accent-text); font-weight: 700; }

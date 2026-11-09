@@ -1,0 +1,196 @@
+/* CardMensagem - Layout tipo WhatsApp com avatares dinâmicos */
+
+.linhaUsuario {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    gap: 8px;
+    margin: 8px 0;
+    padding: 0 12px;
+}
+
+.linhaBestPick {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 8px;
+    margin: 8px 0;
+    padding: 0 12px;
+}
+
+/* ===== AVATARES ===== */
+
+.avatarUsuario {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.avatarUsuarioPlaceholder {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+}
+
+.avatarBestPick {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bp-sidebar, #f5f5f5);
+    color: var(--bp-accent-text, #22c55e);
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+/* ===== BALÕES DE MENSAGEM ===== */
+
+.mensagemUsuario {
+    max-width: min(80%, 500px);
+    background: #1f6f3d;
+    color: #ffffff;
+    padding: 10px 14px;
+    border-radius: 18px 18px 4px 18px;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.mensagemBestPick {
+    max-width: min(80%, 500px);
+    background: var(--bp-surface, #ffffff);
+    border: 1px solid var(--bp-border, #e5e5e5);
+    color: var(--bp-text, #1a1a1a);
+    padding: 10px 14px;
+    border-radius: 18px 18px 18px 4px;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+/* ===== CONTEÚDO DAS MENSAGENS ===== */
+
+.conteudoMensagem {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.conteudoMensagem p {
+    margin: 0;
+    padding: 0;
+}
+
+.conteudoMensagem p + p {
+    margin-top: 8px;
+}
+
+/* ===== PRODUTOS DENTRO DE MENSAGEM ===== */
+
+.produtos {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mensagemUsuario .produtos,
+.mensagemBestPick .produtos {
+    /* Produtos dentro do balão */
+}
+
+/* ===== RESPONSIVIDADE ===== */
+
+@media (max-width: 768px) {
+    .mensagemUsuario,
+    .mensagemBestPick {
+        max-width: min(85%, 400px);
+        padding: 9px 12px;
+        font-size: 13px;
+    }
+
+    .avatarUsuario,
+    .avatarBestPick,
+    .avatarUsuarioPlaceholder {
+        width: 32px;
+        height: 32px;
+    }
+
+    .avatarBestPick {
+        font-size: 12px;
+    }
+
+    .linhaUsuario,
+    .linhaBestPick {
+        gap: 6px;
+        padding: 0 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mensagemUsuario,
+    .mensagemBestPick {
+        max-width: min(90%, 350px);
+        padding: 8px 11px;
+        font-size: 13px;
+    }
+
+    .avatarUsuario,
+    .avatarBestPick,
+    .avatarUsuarioPlaceholder {
+        width: 28px;
+        height: 28px;
+    }
+
+    .avatarBestPick {
+        font-size: 11px;
+    }
+}
+
+/* ===== ACESSIBILIDADE ===== */
+
+.mensagemUsuario,
+.mensagemBestPick {
+    transition: none;
+}
+
+.mensagemUsuario:focus-within,
+.mensagemBestPick:focus-within {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+/* ===== LINKS ===== */
+
+.conteudoMensagem a {
+    color: inherit;
+    text-decoration: underline;
+    word-break: break-all;
+}
+
+.mensagemUsuario a {
+    color: #e8f5e9;
+    opacity: 0.9;
+}
+
+.mensagemBestPick a {
+    color: var(--bp-accent-text, #22c55e);
+}
+
+/* ===== ESTADOS DE CARREGAMENTO ===== */
+
+.carregando {
+    opacity: 0.7;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}

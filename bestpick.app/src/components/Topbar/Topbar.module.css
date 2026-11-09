@@ -82,3 +82,8 @@
     background-color: var(--bp-sidebar);
     color: var(--bp-accent-text);
 }
+.acoes { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.perfil { display: flex; align-items: center; gap: 8px; color: var(--bp-accent-text); text-decoration: none; min-width: 0; }
+.perfil span:last-child { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.perfil:focus-visible { outline: 3px solid var(--bp-accent-text); outline-offset: 3px; }
+@media (max-width: 600px) { .perfil span:last-child { display: none; } }

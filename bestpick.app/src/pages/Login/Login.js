@@ -30,7 +30,6 @@ export function Login() {
             navigate('/dashboard');
 
         } catch (error) {
-            console.error(error);
             setErro('E-mail ou senha inválidos');
         }
         finally {
@@ -58,7 +57,7 @@ export function Login() {
                     <p className={styles.eyebrow}>Entre para continuar</p>
 
 
-                    {erro && <p className={styles.mensagemErro}>{erro}</p>}
+                    {erro && <p className={styles.mensagemErro} role="alert">{erro}</p>}
 
                     <div className={styles.form}>
                         <div className={styles.campo}>
@@ -79,7 +78,7 @@ export function Login() {
                         <div className={styles.campo}>
                             <input
                                 minLength={6}
-                                maxLength={20}
+                                maxLength={40}
                                 id="senha"
                                 type={mostrarSenha ? "text" : "password"}
                                 placeholder="Senha"

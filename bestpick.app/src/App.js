@@ -1,4 +1,6 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
+import { UsuarioProvider } from './contexts/UsuarioContext';
+import { Perfil } from './pages/Perfil/Perfil';
 import { Login } from './pages/Login/Login';
 import { Home } from './pages/Home/Home';
 import { Dashboard } from './pages/Dashboard/Dashboard';
@@ -12,10 +14,13 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Login />} />
-        <Route path='/chat' element={<RotaPrivada><Home /></RotaPrivada>} />
-        <Route path='/dashboard' element={<RotaPrivada><Dashboard /></RotaPrivada>} />
-        <Route path='/historico' element={<RotaPrivada><Historico /></RotaPrivada>} />
-        <Route path='/favoritos' element={<RotaPrivada><Favorito /></RotaPrivada>} />
+        <Route element={<RotaPrivada><UsuarioProvider><Outlet /></UsuarioProvider></RotaPrivada>}>
+          <Route path='/chat' element={<Home />} />
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/historico' element={<Historico />} />
+          <Route path='/favoritos' element={<Favorito />} />
+          <Route path='/perfil' element={<Perfil />} />
+        </Route>
         <Route path='/cadastro' element={<Cadastro />} />
       </Routes>
     </BrowserRouter>

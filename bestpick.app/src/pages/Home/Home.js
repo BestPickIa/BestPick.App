@@ -1,4 +1,6 @@
 import style from "./Home.module.css";
+import { CardMensagem } from '../../components/CardMensagem/CardMensagem';
+import { useUsuario } from '../../contexts/UsuarioContext';
 
 import { Sidebar } from "../../components/Sidebar/Sidebar";
 import { Topbar } from "../../components/Topbar/Topbar";
@@ -14,14 +16,18 @@ import produtoAPI from "../../services/produtoAPI";
 import favoritoAPI from "../../services/favoritoAPI";
 
 export function Home() {
+    const { usuario: perfil } = useUsuario();
     const token = localStorage.getItem("token");
     const usuario = token ? jwtDecode(token) : {};
 
     const nomeUsuario =
-        usuario["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] || "Usuário";
+        perfil?.nome || usuario["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] || "Usuário";
 
     const usuarioId =
         usuario["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+    
+    // URL da foto do usuário para avatares dinâmicos
+    const fotoUsuarioUrl = perfil?.id ? `/Usuario/foto/${perfil.id}` : null;
 
     const chaveChat = `bestpickChat_${usuarioId || "usuario"}`;
 
@@ -230,30 +236,16 @@ export function Home() {
 
                     <div className={style.mensagens}>
                         {mensagens.map((item, index) => (
-                            <div
-                                key={index}
-                                className={
-                                    item.tipo === "usuario"
-                                        ? style.mensagemUsuario
-                                        : item.produtos?.length
-                                            ? style.respostaProdutos
-                                            : style.mensagemBestPick
-                                }
-                            >
-                                {item.texto && (
-                                    <div
-                                        className={
-                                            item.produtos?.length
-                                                ? style.mensagemBestPick
-                                                : ""
-                                        }
-                                    >
-                                        {item.texto}
-                                    </div>
-                                )}
-
+                            <div key={index}>
+                                <CardMensagem
+                                    mensagem={item}
+                                    usuarioId={usuarioId}
+                                    fotoUsuarioUrl={fotoUsuarioUrl}
+                                    fotoUsuarioAtualizacao={perfil?.fotoAtualizadaEm}
+                                />
+                                
                                 {item.produtos?.length > 0 && (
-                                    <div className={style.produtos}>
+                                    <div className={style.produtosDoChat}>
                                         {item.produtos.map((produto, produtoIndex) => (
                                             <CardProduto
                                                 key={produto.id || produtoIndex}
@@ -268,9 +260,11 @@ export function Home() {
                         ))}
 
                         {carregando && (
-                            <div className={style.mensagemBestPick}>
-                                Pensando...
-                            </div>
+                            <CardMensagem
+                                mensagem={{ tipo: 'bestpick', texto: 'Pensando...', produtos: [] }}
+                                usuarioId={usuarioId}
+                                fotoUsuarioUrl={fotoUsuarioUrl}
+                            />
                         )}
 
                         <div ref={finalMensagensRef}></div>

@@ -1,0 +1,16 @@
+.pagina { max-width: 1100px; margin: auto; min-height: 100vh; padding: 96px 30px 40px; color: var(--bp-text); }
+.pagina h1 { font-size: 1.9rem; }
+.pagina h2 { font-size: 1.25rem; margin-bottom: 20px; }
+.pagina p { color: var(--bp-muted); }
+.grade { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; margin-top: 24px; }
+.cartao { padding: 24px; border: 1px solid var(--bp-border); border-radius: 16px; background: var(--bp-surface); min-width: 0; }
+.foto { margin-bottom: 20px; }
+.foto > img { width: 112px; height: 112px; object-fit: cover; border-radius: 50%; }
+.acoes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.senha { grid-column: 1 / -1; }
+.senha form { max-width: 480px; }
+.pagina input { border-color: var(--bp-control-border); }
+.pagina button[class*="btn-primary"] { background: var(--bp-accent-text); border-color: var(--bp-accent-text); }
+.pagina :is(input, button):focus-visible { outline: 3px solid var(--bp-accent-text); outline-offset: 3px; }
+@media (max-width: 900px) { .grade { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 600px) { .pagina { padding: 76px 12px 24px; } .cartao { padding: 18px 14px; } .pagina h1 { font-size: 1.6rem; } .acoes > button { flex-grow: 1; } }

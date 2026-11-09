@@ -103,6 +103,13 @@
     padding-right: 48px;
 }
 
+.ajudaSenha {
+    margin: -5px 0 0;
+    color: var(--bp-muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
 .botaoOlho {
     position: absolute;
     right: 14px;
