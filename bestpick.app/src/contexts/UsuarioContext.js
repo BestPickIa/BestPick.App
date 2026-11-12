@@ -13,6 +13,7 @@ export function UsuarioProvider({ children }) {
     const [tentativa, setTentativa] = useState(0);
     const fotoRequest = useRef(null);
 
+
     // A URL pertence ao provider, não a cada avatar ou mensagem.
     useEffect(() => {
         if (!foto) return;

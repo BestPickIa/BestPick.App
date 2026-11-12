@@ -1,7 +1,6 @@
+import { AppShell } from '../../components/AppShell';
 import { useEffect, useRef, useState } from 'react';
 import { Alert, Button, Form, Spinner } from 'react-bootstrap';
-import { Sidebar } from '../../components/Sidebar/Sidebar';
-import { Topbar } from '../../components/Topbar/Topbar';
 import { Avatar } from '../../components/Avatar/Avatar';
 import { useUsuario } from '../../contexts/UsuarioContext';
 import usuarioAPI from '../../services/usuarioAPI';
@@ -94,8 +93,7 @@ export function Perfil() {
     }
 
     const bloqueado = Boolean(ocupado);
-    return <Sidebar>
-        <Topbar titulo="Meu perfil" />
+    return <AppShell title="Meu perfil">
         <main className={style.pagina}>
             <h1>Seu perfil</h1>
             <p>Gerencie seus dados, sua foto e sua senha.</p>
@@ -162,5 +160,5 @@ export function Perfil() {
                 </section>
             </div>}
         </main>
-    </Sidebar>;
+    </AppShell>;
 }

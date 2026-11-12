@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import styles from "./Login.module.css";
 import usuarioAPI from "../../services/usuarioAPI";
 import imagemTelaLogin from "../../assets/imagemTelaLogin.png";
@@ -27,7 +27,7 @@ export function Login() {
 
             await new Promise(resolve => setTimeout(resolve, 750));
 
-            navigate('/dashboard');
+            navigate({ to: "/" });
 
         } catch (error) {
             setErro('E-mail ou senha inválidos');
@@ -118,7 +118,7 @@ export function Login() {
                         <p>Ainda não tem uma conta?</p>
                         <button
                             type="button"
-                            onClick={() => navigate('/cadastro')}
+                            onClick={() => navigate({ to: "/cadastro" })}
                         >
                             Criar conta
                         </button>

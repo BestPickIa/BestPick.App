@@ -1,6 +1,6 @@
 .home {
     min-height: 100vh;
-    padding: 90px 30px 30px;
+    padding: 24px 28px 28px;
     background-image: none;
     background-color: var(--bp-background);
     background-size: 1200px auto;
@@ -8,6 +8,20 @@
     background-repeat: repeat;
     color: var(--bp-text);
     box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    @keyframes fadeIn {
+        from {
+            opacity: 1;
+            transform: none;
+        }
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
 }
 
 .chat {
@@ -17,6 +31,7 @@
     margin: auto;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 }
 
 .apresentacao {
@@ -26,21 +41,24 @@
 
 .saudacao {
     margin: 0 0 8px;
-    color: var(--bp-accent-text);
+    color: var(--bp-primary);
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 1.5px;
+    font-family: var(--bp-font-heading);
 }
 
 .apresentacao h1 {
     margin: 0 0 12px;
     color: var(--bp-text);
     font-size: 30px;
-    font-weight: 600;
+    font-weight: 700;
+    font-family: var(--bp-font-heading);
+    letter-spacing: -0.02em;
 }
 
 .apresentacao h1 span {
-    color: var(--bp-accent-text);
+    color: var(--bp-primary);
 }
 
 .descricao {
@@ -49,6 +67,7 @@
     color: var(--bp-muted);
     font-size: 14px;
     line-height: 1.6;
+    font-family: var(--bp-font-body);
 }
 
 .conversa {
@@ -75,10 +94,24 @@
     padding: 12px 16px;
     background: var(--bp-surface);
     border: 1px solid var(--bp-border);
-    border-radius: 5px 14px 14px 14px;
+    border-radius: 16px 16px 16px 4px;
     color: var(--bp-text);
     font-size: 14px;
     line-height: 1.6;
+    font-family: var(--bp-font-body);
+    box-shadow: var(--shadow-soft);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .mensagens {
@@ -104,6 +137,9 @@
     font-size: 14px;
     line-height: 1.5;
     word-break: break-word;
+    font-family: var(--bp-font-body);
+    box-shadow: var(--shadow-soft);
+    animation: fadeIn 0.3s ease;
 }
 
 .mensagemBestPick {
@@ -117,6 +153,9 @@
     font-size: 14px;
     line-height: 1.5;
     word-break: break-word;
+    font-family: var(--bp-font-body);
+    box-shadow: var(--shadow-soft);
+    animation: fadeIn 0.3s ease;
 }
 
 .produtosDoChat {
@@ -140,20 +179,27 @@
 .novaBusca {
     align-self: center;
     margin: 0 0 15px;
-    padding: 9px 18px;
+    padding: 10px 20px;
     background: transparent;
-    border: 1px solid var(--bp-accent-text);
-    border-radius: 10px;
-    color: var(--bp-accent-text);
-    font-family: inherit;
+    border: 1px solid var(--bp-primary);
+    border-radius: 12px;
+    color: var(--bp-primary);
+    font-family: var(--bp-font-body);
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: 0.2s;
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
 
 .novaBusca:hover {
-    background: rgba(34, 197, 94, 0.1);
+    background: color-mix(in srgb, var(--bp-primary) 8%, transparent);
+    border-color: var(--bp-sidebar-accent);
+    color: var(--bp-primary);
+}
+
+.novaBusca:focus-visible {
+    outline: 2px solid var(--bp-sidebar-accent);
+    outline-offset: 2px;
 }
 
 .areaMensagem {
@@ -162,17 +208,18 @@
     display: flex;
     align-items: flex-end;
     gap: 10px;
-    padding: 10px;
+    padding: 12px;
     background: var(--bp-surface);
     border: 1px solid var(--bp-control-border);
     border-radius: 16px;
     box-sizing: border-box;
-    transition: 0.2s;
+    box-shadow: var(--shadow-soft);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .areaMensagem:focus-within {
-    border-color: var(--bp-accent-text);
-    box-shadow: 0 0 0 3px var(--bp-accent-text);
+    border-color: var(--bp-sidebar-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--bp-sidebar-accent) 25%, transparent);
 }
 
 .areaMensagem textarea {
@@ -206,18 +253,24 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--bp-accent);
+    background: var(--bp-primary);
     border: none;
     border-radius: 10px;
-    color: var(--bp-text);
+    color: #ffffff;
     font-size: 20px;
     cursor: pointer;
-    transition: 0.2s;
+    transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
 }
 
 .areaMensagem button:hover {
-    background: #2bd968;
-    transform: translateY(-1px);
+    background: oklch(0.38 0.10 155);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+.areaMensagem button:focus-visible {
+    outline: 2px solid var(--bp-sidebar-accent);
+    outline-offset: 2px;
 }
 
 .areaMensagem button:disabled {
@@ -235,7 +288,7 @@
 
 @media (max-width: 700px) {
     .home {
-        padding: 85px 15px 20px;
+        padding: 72px 12px 16px;
     }
 
     .mensagemIA,
@@ -309,3 +362,17 @@
     .papelDeParede { grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 20px 12px; }
 }
 .avatarBestPick { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--bp-sidebar); color: var(--bp-accent-text); font-weight: 700; }
+
+
+/* === ACESSIBILIDADE: MOVIMENTO REDUZIDO === */
+@media (prefers-reduced-motion: reduce) {
+    .mensagemIA,
+    .mensagemUsuario,
+    .mensagemBestPick,
+    .novaBusca,
+    .areaMensagem,
+    .areaMensagem button {
+        animation: none !important;
+        transition: none !important;
+    }
+}

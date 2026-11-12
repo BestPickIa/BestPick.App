@@ -11,7 +11,7 @@ export function SidebarItem({ texto, link, logo }) {
                 `${style.sidebar_item} ${isActive ? style.ativo : ''}`
             }
         >
-            {logo}
+            <span className={style.icone_wrapper}>{logo}</span>
             <h3 className={style.texto_link}>{texto}</h3>
         </NavLink>
     );

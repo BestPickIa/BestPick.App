@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import styles from "./Cadastro.module.css";
 import usuarioAPI from "../../services/usuarioAPI";
 import imagemTelaLogin from "../../assets/imagemTelaLogin.png";
@@ -44,7 +44,7 @@ export function Cadastro() {
 
             await new Promise(resolve => setTimeout(resolve, 750));
 
-            navigate('/');
+            navigate({ to: "/login" });
 
         } catch (error) {
             const resposta = error.response?.status === 400 ? error.response.data : null;
@@ -196,7 +196,7 @@ export function Cadastro() {
                         <p>Já tem uma conta?</p>
                         <button
                             type="button"
-                            onClick={() => navigate('/')}
+                            onClick={() => navigate({ to: "/login" })}
                         >
                             Entrar
                         </button>

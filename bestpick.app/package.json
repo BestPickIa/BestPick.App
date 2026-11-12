@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@tanstack/react-router": "^1.170.46",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.3",
@@ -10,24 +11,29 @@
     "axios": "^1.20.0",
     "bootstrap": "^5.3.8",
     "jwt-decode": "^4.0.0",
+    "lucide-react": "^1.71.0",
     "react": "^19.3.0",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.3.0",
     "react-icons": "^5.7.0",
     "react-router-dom": "^7.18.3",
     "react-scripts": "5.0.1",
+    "recharts": "^3.10.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "vite",
+    "build": "vite build",
     "lint": "eslint src --ext .js,.jsx --max-warnings=0",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "typecheck": "tsc --noEmit"
   },
   "jest": {
     "moduleNameMapper": {
-      "^react-router/dom$": "<rootDir>/node_modules/react-router/dist/development/dom-export.js"
+      "^@/(.*)$": "<rootDir>/src/$1",
+      "^@tanstack/router-core/isServer$": "<rootDir>/node_modules/@tanstack/router-core/dist/cjs/isServer/development.cjs",
+      "^@tanstack/router-core/scroll-restoration-script$": "<rootDir>/src/test/__mocks__/scroll-restoration.js"
     }
   },
   "eslintConfig": {
@@ -47,5 +53,14 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^5.2.0",
+    "tailwindcss": "^4.3.5",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.8"
   }
 }

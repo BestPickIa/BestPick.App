@@ -1,9 +1,9 @@
+import { AppShell } from '../../components/AppShell';
 import style from "./Favorito.module.css";
-import { Sidebar } from "../../components/Sidebar/Sidebar";
-import { Topbar } from "../../components/Topbar/Topbar";
 import { CardFavorito } from "../../components/CardFavorito/CardFavorito";
 import { useEffect, useState } from "react";
 import favoritoAPI from "../../services/favoritoAPI";
+import { withTransition } from "../../lib/transition";
 
 export function Favorito() {
 
@@ -26,21 +26,28 @@ export function Favorito() {
     }, []);
 
     async function alterarStatus(favorito) {
-        await favoritoAPI.atualizarStatusAsync(
-            favorito.id,
-            aba === "Favoritado" ? 2 : 1
-        );
+        // Usar transição ao trocar de abá
+        await withTransition(async () => {
+            await favoritoAPI.atualizarStatusAsync(
+                favorito.id,
+                aba === "Favoritado" ? 2 : 1
+            );
 
-        carregarFavoritos();
+            carregarFavoritos();
+        });
     }
+    
     async function remover(id) {
-        await favoritoAPI.removerAsync(id);
+        // Usar transição ao remover cartão
+        await withTransition(async () => {
+            await favoritoAPI.removerAsync(id);
 
-        setFavoritos(atuais =>
-            atuais.filter(favorito =>
-                favorito.id !== id
-            )
-        );
+            setFavoritos(atuais =>
+                atuais.filter(favorito =>
+                    favorito.id !== id
+                )
+            );
+        });
     }
 
     const produtos = favoritos.filter(
@@ -48,9 +55,7 @@ export function Favorito() {
     );
 
     return (
-        <Sidebar>
-
-            <Topbar titulo="Favoritos" />
+        <AppShell title="Favoritos">
 
             <div className={style.pagina}>
 
@@ -72,6 +77,7 @@ export function Favorito() {
                                     : ""
                             }
                             onClick={() =>
+                                // Trocar de aba com fade suave
                                 setAba("Favoritado")
                             }
                         >
@@ -85,6 +91,7 @@ export function Favorito() {
                                     : ""
                             }
                             onClick={() =>
+                                // Trocar de aba com fade suave
                                 setAba("Adquirido")
                             }
                         >
@@ -104,7 +111,7 @@ export function Favorito() {
                         Nenhum produto nesta categoria.
                     </p>
                 ) : (
-                    <div className={style.produtos}>
+                    <div className={style.produtos + " animate-stagger"}>
 
                         {produtos.map(favorito => (
                             <CardFavorito
@@ -121,6 +128,6 @@ export function Favorito() {
 
             </div>
 
-        </Sidebar>
+        </AppShell>
     );
 }

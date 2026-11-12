@@ -7,20 +7,23 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 24px;
+    padding: 0 28px;
     box-sizing: border-box;
-    background: var(--bp-background);
+    background: oklch(1 0 0);
     z-index: 100;
     transition: left 0.25s ease, width 0.25s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .topbar_conteudo h2 {
     position: relative;
     margin: 0;
-    padding-bottom: 8px;
+    padding-bottom: 10px;
     color: var(--bp-text);
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 700;
+    font-family: var(--bp-font-heading);
+    letter-spacing: -0.02em;
 }
 
 .topbar_conteudo h2::after {
@@ -28,10 +31,11 @@
     position: absolute;
     left: 0;
     bottom: 0;
-    width: 32px;
+    width: 40px;
     height: 3px;
-    background: var(--bp-accent);
-    border-radius: 10px;
+    background: var(--bp-sidebar-accent);
+    border-radius: 2px;
+    transition: width 0.2s ease;
 }
 
 .botao_deslogar {
@@ -44,46 +48,102 @@
     background: transparent;
     border: none;
     border-radius: 8px;
-    color: var(--bp-muted);
+    color: var(--bp-text-light);
     font-size: 22px;
     cursor: pointer;
-    transition: 0.2s;
+    transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .botao_deslogar:hover {
-    background: rgba(34, 197, 94, 0.1);
-    color: var(--bp-accent-text);
+    background: rgba(212, 230, 57, 0.1);
+    color: var(--bp-sidebar-accent);
 }
 
 @media (max-width: 800px) {
     .topbar_conteudo {
-        height: 52px;
-        padding: 0 15px;
+        height: 56px;
+        padding: 0 20px;
     }
 
     .topbar_conteudo h2 {
-        padding-bottom: 6px;
-        font-size: 16px;
+        padding-bottom: 8px;
+        font-size: 18px;
     }
 
     .topbar_conteudo h2::after {
-        width: 25px;
+        width: 32px;
         height: 2px;
     }
 
     .botao_deslogar {
-        width: 32px;
-        height: 32px;
-        font-size: 19px;
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
     }
 }
+
 .botao_deslogar:focus-visible,
 .botao_deslogar:active {
-    background-color: var(--bp-sidebar);
-    color: var(--bp-accent-text);
+    outline: 3px solid var(--bp-sidebar-accent);
+    outline-offset: 2px;
+    color: var(--bp-sidebar-accent);
 }
-.acoes { display: flex; align-items: center; gap: 12px; min-width: 0; }
-.perfil { display: flex; align-items: center; gap: 8px; color: var(--bp-accent-text); text-decoration: none; min-width: 0; }
-.perfil span:last-child { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.perfil:focus-visible { outline: 3px solid var(--bp-accent-text); outline-offset: 3px; }
-@media (max-width: 600px) { .perfil span:last-child { display: none; } }
+
+.acoes {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+}
+
+.perfil {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--bp-text);
+    text-decoration: none;
+    min-width: 0;
+    transition: color 0.2s ease;
+}
+
+.perfil:hover {
+    color: var(--bp-sidebar-accent);
+}
+
+.perfil span:last-child {
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+    font-family: var(--bp-font-body);
+}
+
+.perfil:focus-visible {
+    outline: 3px solid var(--bp-sidebar-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+@media (max-width: 600px) {
+    .perfil span:last-child {
+        display: none;
+    }
+}
+
+
+/* === ACESSIBILIDADE: MOVIMENTO REDUZIDO === */
+@media (prefers-reduced-motion: reduce) {
+    .topbar_conteudo,
+    .botao_deslogar,
+    .perfil {
+        transition: none !important;
+    }
+}
+
+/* Aparência da referência, ativada apenas no Dashboard. */
+.topbar_conteudo[data-dashboard=true] { background: var(--bp-background); border-bottom: 1px solid var(--bp-border); box-shadow: none; height: 70px; }
+.topbar_conteudo[data-dashboard=true] h2 { padding: 0; font-size: 18px; }
+.topbar_conteudo[data-dashboard=true] h2::after { display: none; }
+.topbar_conteudo[data-dashboard=true] .perfil { background: var(--bp-card); border: 1px solid var(--bp-border); border-radius: 999px; padding: 4px 12px 4px 4px; box-shadow: var(--shadow-soft); }
+@media (max-width: 639px) { .topbar_conteudo[data-dashboard=true] { padding: 0 12px; } .topbar_conteudo[data-dashboard=true] .acoes { gap: 8px; } }

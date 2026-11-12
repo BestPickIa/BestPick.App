@@ -1,14 +1,14 @@
+import { AppShell } from '../../components/AppShell';
 import style from "./Historico.module.css";
 import Table from "react-bootstrap/Table";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { MdDelete, MdHistory, MdKeyboardArrowDown, MdSearch } from "react-icons/md";
 import { Fragment, useEffect, useState } from "react";
-import { Sidebar } from "../../components/Sidebar/Sidebar";
-import { Topbar } from "../../components/Topbar/Topbar";
 import { VerHistorico } from "../../components/VerHistorico/VerHistorico";
 import historicoAPI from "../../services/historicoAPI";
 import produtoAPI from "../../services/produtoAPI";
+import { withTransition } from "../../lib/transition";
 
 export function Historico() {
 
@@ -29,32 +29,38 @@ export function Historico() {
     );
 
     const handleExpandir = async historicoId => {
-        if (historicoAberto === historicoId) {
-            setHistoricoAberto(null);
-            return;
-        }
+        // Usar transição ao expandir/recolher linha
+        await withTransition(async () => {
+            if (historicoAberto === historicoId) {
+                setHistoricoAberto(null);
+                return;
+            }
 
-        try {
-            setHistoricoAberto(historicoId);
-            setProdutos([]);
-            setProdutos(await produtoAPI.buscarPorHistoricoAsync(historicoId));
-        } catch (error) {
-            console.error("Erro ao carregar produtos:", error);
-        }
+            try {
+                setHistoricoAberto(historicoId);
+                setProdutos([]);
+                setProdutos(await produtoAPI.buscarPorHistoricoAsync(historicoId));
+            } catch (error) {
+                console.error("Erro ao carregar produtos:", error);
+            }
+        });
     };
 
     const handleDeletar = async () => {
         try {
-            await historicoAPI.removerAsync(historicoSelecionado.id);
+            // Usar transição ao deletar
+            await withTransition(async () => {
+                await historicoAPI.removerAsync(historicoSelecionado.id);
 
-            setHistoricos(atuais =>
-                atuais.filter(historico => historico.id !== historicoSelecionado.id)
-            );
+                setHistoricos(atuais =>
+                    atuais.filter(historico => historico.id !== historicoSelecionado.id)
+                );
 
-            if (historicoAberto === historicoSelecionado.id)
-                setHistoricoAberto(null);
+                if (historicoAberto === historicoSelecionado.id)
+                    setHistoricoAberto(null);
 
-            setHistoricoSelecionado(null);
+                setHistoricoSelecionado(null);
+            });
         } catch (error) {
             console.error("Erro ao remover histórico:", error);
         }
@@ -67,8 +73,7 @@ export function Historico() {
         new Date(data).toLocaleDateString("pt-BR");
 
     return (
-        <Sidebar>
-            <Topbar titulo="Histórico" />
+        <AppShell title="Histórico">
 
             <div className={style.pagina}>
 
@@ -147,7 +152,7 @@ export function Historico() {
                                                     }}
                                                 >
                                                     <MdKeyboardArrowDown
-                                                        className={`${style.seta} ${historicoAberto === historico.id ? style.setaAberta : ""}`}
+                                                        className={`${style.seta} ${historicoAberto === historico.id ? style.setaAberta : ""} arrow-rotate ${historicoAberto === historico.id ? 'rotated' : ''}`}
                                                     />
                                                 </button>
                                             </td>
@@ -201,6 +206,6 @@ export function Historico() {
                     </Button>
                 </Modal.Footer>
             </Modal>
-        </Sidebar>
+        </AppShell>
     );
 }

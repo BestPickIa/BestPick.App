@@ -14,7 +14,7 @@ export function Topbar({ titulo }) {
     }
 
     return (
-        <div className={style.topbar_conteudo}>
+        <div className={style.topbar_conteudo} data-dashboard={titulo === 'Dashboard'}>
             <h2>{titulo}</h2>
 
             <div className={style.acoes}>

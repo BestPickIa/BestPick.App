@@ -1,3 +1,4 @@
+import { updateApp } from '../lib/store';
 import { HTTPClient } from "./client";
 
 const favoritoAPI = {
@@ -18,6 +19,7 @@ const favoritoAPI = {
     async listarAsync() {
         try {
             const response = await HTTPClient.get(`/Favorito`);
+            updateApp({ favorites: response.data.filter(item => item.status === "Favoritado"), acquired: response.data.filter(item => item.status === "Adquirido") });
 
             return response.data;
         } catch (error) {

@@ -3,31 +3,40 @@
     align-items: center;
     gap: 12px;
     min-height: 44px;
-    padding: 8px 13px;
-    margin: 3px 0;
-    color: var(--bp-muted);
+    padding: 12px 14px;
+    margin: 0;
+    color: var(--bp-text-light);
     text-decoration: none;
-    border-radius: 9px;
+    border-radius: 8px;
+    border-left: 3px solid transparent;
     box-sizing: border-box;
-    transition: 0.2s;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
 
 .sidebar_item svg {
     flex-shrink: 0;
-    font-size: 25px;
-    color: var(--bp-muted);
-    transition: 0.2s;
+    font-size: 24px;
+    color: var(--bp-text-light);
+    transition: color 0.25s ease;
 }
 
-.sidebar_item:hover,
+.sidebar_item:hover {
+    background: rgba(212, 230, 57, 0.12);
+    color: var(--bp-sidebar-accent);
+}
+
+.sidebar_item:hover svg {
+    color: var(--bp-sidebar-accent);
+}
+
 .ativo {
-    background: rgba(34, 197, 94, 0.1);
-    color: var(--bp-accent-text);
+    background: var(--bp-sidebar-accent);
+    color: var(--bp-text);
+    border-left-color: var(--bp-text);
 }
 
-.sidebar_item:hover svg,
 .ativo svg {
-    color: var(--bp-accent-text);
+    color: var(--bp-text);
 }
 
 .texto_link {
@@ -35,13 +44,14 @@
     white-space: nowrap;
     font-size: 14px;
     font-weight: 500;
+    font-family: var(--bp-font-body);
 }
 
 @media (max-width: 800px) {
     .sidebar_item {
         justify-content: center;
         gap: 0;
-        padding: 8px 0;
+        padding: 12px 8px;
     }
 
     .sidebar_item svg {
@@ -52,13 +62,23 @@
         display: none;
     }
 }
+
 .sidebar_item:focus-visible,
 .sidebar_item:active {
-    background-color: var(--bp-surface);
-    color: var(--bp-accent-text);
+    outline: 3px solid var(--bp-sidebar-accent);
+    outline-offset: -3px;
 }
 
 .sidebar_item:focus-visible svg,
 .sidebar_item:active svg {
-    color: var(--bp-accent-text);
+    color: var(--bp-sidebar-accent);
+}
+
+
+/* === ACESSIBILIDADE: MOVIMENTO REDUZIDO === */
+@media (prefers-reduced-motion: reduce) {
+    .sidebar_item,
+    .sidebar_item svg {
+        transition: none !important;
+    }
 }

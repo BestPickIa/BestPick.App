@@ -1,6 +1,6 @@
 .pagina {
     min-height: 100vh;
-    padding: 100px 35px 35px;
+    padding: 0;
     background: var(--bp-background);
     color: var(--bp-text);
     box-sizing: border-box;
@@ -17,13 +17,16 @@
 .cabecalho h1 {
     margin: 0 0 7px;
     font-size: 26px;
-    font-weight: 600;
+    font-weight: 700;
+    font-family: var(--bp-font-heading);
+    letter-spacing: -0.02em;
 }
 
 .cabecalho p {
     margin: 0;
     color: var(--bp-muted);
     font-size: 13px;
+    font-family: var(--bp-font-body);
 }
 
 .total {
@@ -33,14 +36,16 @@
     padding: 10px 15px;
     background: var(--bp-surface);
     border: 1px solid var(--bp-border);
-    border-radius: 10px;
+    border-radius: 12px;
     color: var(--bp-muted);
     font-size: 12px;
+    font-family: var(--bp-font-body);
+    box-shadow: var(--shadow-soft);
 }
 
 .total svg,
 .total strong {
-    color: var(--bp-accent-text);
+    color: var(--bp-primary);
 }
 
 .total svg {
@@ -49,6 +54,7 @@
 
 .total strong {
     font-size: 15px;
+    font-weight: 700;
 }
 
 .busca {
@@ -61,12 +67,15 @@
     padding: 0 14px;
     background: var(--bp-surface);
     border: 1px solid var(--bp-control-border);
-    border-radius: 9px;
+    border-radius: 12px;
     box-sizing: border-box;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: var(--shadow-soft);
 }
 
 .busca:focus-within {
-    border-color: var(--bp-accent-text);
+    border-color: var(--bp-sidebar-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--bp-sidebar-accent) 25%, transparent);
 }
 
 .busca svg {
@@ -94,6 +103,7 @@
     background: var(--bp-surface);
     border: 1px solid var(--bp-border);
     border-radius: 12px;
+    box-shadow: var(--shadow-soft);
 }
 
 .tabela table {
@@ -128,7 +138,7 @@
 }
 
 .linha:hover td {
-    background: var(--bp-sidebar) !important;
+    background: color-mix(in srgb, var(--bp-sidebar-accent) 8%, transparent) !important;
 }
 
 .produto {
@@ -151,10 +161,18 @@
 .deletar,
 .expandir {
     display: flex;
-    padding: 0;
+    padding: 8px;
     background: none;
     border: none;
     cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.deletar:focus-visible,
+.expandir:focus-visible {
+    outline: 2px solid var(--bp-sidebar-accent);
+    outline-offset: 2px;
 }
 
 .deletar svg {
@@ -169,11 +187,11 @@
 .seta {
     color: var(--bp-muted);
     font-size: 23px;
-    transition: .2s;
+    transition: color 0.25s ease, transform 0.25s ease;
 }
 
 .setaAberta {
-    color: var(--bp-accent-text);
+    color: var(--bp-sidebar-accent);
     transform: rotate(180deg);
 }
 
@@ -211,7 +229,7 @@
 @media (max-width: 800px) {
     .pagina {
         width: 100%;
-        padding: 85px 15px 25px;
+        padding: 0;
         overflow-x: hidden;
     }
 
@@ -337,4 +355,16 @@
     --bs-btn-disabled-bg: var(--bp-danger);
     --bs-btn-disabled-border-color: var(--bp-danger);
     --bs-btn-focus-shadow-rgb: 180, 35, 24;
+}
+
+
+/* === ACESSIBILIDADE: MOVIMENTO REDUZIDO === */
+@media (prefers-reduced-motion: reduce) {
+    .busca,
+    .deletar,
+    .expandir,
+    .seta,
+    .deletar:hover svg {
+        transition: none !important;
+    }
 }

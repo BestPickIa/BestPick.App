@@ -1,0 +1,302 @@
+@layer profile-overrides, theme, base, legacy, components, utilities;
+@import "tailwindcss";
+@import "bootstrap/dist/css/bootstrap.min.css" layer(legacy);
+@import "./index.css" layer(legacy);
+
+:root {
+  --sidebar: oklch(0.24 0.05 155);
+  --sidebar-foreground: oklch(0.85 0.03 150);
+  --sidebar-primary: oklch(0.88 0.19 128);
+  --sidebar-primary-foreground: oklch(0.2 0.05 155);
+  --sidebar-accent: oklch(0.3 0.06 155);
+  --sidebar-accent-foreground: oklch(0.98 0.01 150);
+  --sidebar-border: oklch(0.32 0.05 155);
+  --sidebar-ring: oklch(0.88 0.19 128);
+}
+@theme inline {
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-background: var(--bp-background);
+  --color-foreground: var(--bp-text);
+  --color-card: var(--bp-card);
+  --color-muted-foreground: var(--bp-text-light);
+  --color-border: var(--bp-border);
+  --color-primary: var(--bp-primary);
+  --color-primary-foreground: var(--bp-primary-foreground);
+  /* Avoid Bootstrap's !important primary utilities in the chat. */
+  --color-brand-primary: var(--bp-primary);
+  --color-brand-primary-foreground: var(--bp-primary-foreground);
+  --color-input: var(--bp-control-border);
+  --color-accent-foreground: var(--sidebar-primary-foreground);
+  --color-accent: var(--sidebar-primary);
+  --color-secondary: var(--bp-secondary);
+  --color-muted: var(--bp-muted-bg);
+  --color-destructive: var(--bp-danger);
+  --font-display: 'Bricolage Grotesque', sans-serif;
+  --font-sans: 'Figtree', sans-serif;
+  --shadow-lift: 0 20px 40px -20px oklch(0.35 0.1 155 / 35%);
+  --shadow-soft: 0 1px 2px oklch(0.3 0.05 155 / 6%), 0 8px 24px -12px oklch(0.3 0.05 155 / 18%);
+}
+@utility card-surface { @apply rounded-2xl bg-card px-6 py-4 shadow-soft border border-border; }
+@utility bg-hero { background: linear-gradient(135deg, var(--bp-primary), oklch(0.52 0.13 155)); }
+
+/* Earlier layer wins for !important, preserving the requested semantic classes. */
+@layer profile-overrides {
+  [data-profile-page] .bg-primary { background-color: var(--bp-primary) !important; }
+  [data-profile-page] .bg-primary:hover { background-color: color-mix(in oklab, var(--bp-primary) 90%, transparent) !important; }
+  [data-profile-page] .bg-secondary { background-color: var(--bp-secondary) !important; }
+  [data-profile-page] .text-primary { color: var(--bp-primary) !important; }
+  [data-profile-page] .border-primary { border-color: var(--bp-primary) !important; }
+}
+
+/* ============================================================================
+   KEYFRAMES - Animações base
+   ============================================================================ */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes spinningDots {
+  0%, 20% { content: '•'; }
+  40% { content: '•×'; }
+  60% { content: '•×•'; }
+}
+
+/* ============================================================================
+   UTILITIES
+   ============================================================================ */
+
+@utility animate-rise {
+  animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@utility animate-stagger {
+  & > * {
+    animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+    opacity: 0;
+    animation-fill-mode: both;
+  }
+
+  & > :nth-child(1) { animation-delay: 40ms; }
+  & > :nth-child(2) { animation-delay: 80ms; }
+  & > :nth-child(3) { animation-delay: 120ms; }
+  & > :nth-child(4) { animation-delay: 160ms; }
+  & > :nth-child(5) { animation-delay: 200ms; }
+  & > :nth-child(6) { animation-delay: 240ms; }
+  & > :nth-child(7) { animation-delay: 280ms; }
+  & > :nth-child(8) { animation-delay: 320ms; }
+}
+
+@utility animate-pop {
+  animation: pop 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@utility animate-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ============================================================================
+   OTIMIZAÇÕES DE PERFORMANCE - Transições eficientes
+   ============================================================================ */
+
+@utility transition-width {
+  transition: width 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@utility transition-padding {
+  transition: padding 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* ============================================================================
+   VIEW TRANSITIONS - Transições entre páginas
+   ============================================================================ */
+
+::view-transition-old(root) {
+  animation: slideDown 180ms ease-in;
+}
+
+::view-transition-new(root) {
+  animation: slideUp 280ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Sidebar e Header não devem animar na transição de página */
+::view-transition-group(sidebar) {
+  animation: none;
+}
+
+::view-transition-group(topbar) {
+  animation: none;
+}
+
+/* ============================================================================
+   TRANSIÇÕES DE COMPONENTES
+   ============================================================================ */
+
+/* Botões e cartões - hover suave */
+@utility btn-smooth {
+  @apply transition-all duration-200;
+  
+  &:hover {
+    @apply -translate-y-0.5;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.12));
+  }
+
+  &:active {
+    @apply scale-[0.98];
+  }
+}
+
+/* Indicador de abas */
+@utility tab-indicator {
+  @apply transition-all duration-250;
+}
+
+/* Abrir/Fechar com altura suave */
+@utility expand-smooth {
+  transition: grid-template-rows 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+  
+  &.closed {
+    grid-template-rows: 0fr;
+  }
+  
+  &.open {
+    grid-template-rows: 1fr;
+  }
+}
+
+/* Seta que gira 180° */
+@utility arrow-rotate {
+  @apply transition-transform duration-300;
+
+  &.rotated {
+    @apply rotate-180;
+  }
+}
+
+/* Fade + scale ao remover cartão */
+@utility card-exit {
+  @apply transition-all duration-200;
+
+  &.removing {
+    @apply opacity-0 scale-[0.96];
+  }
+}
+
+/* Fade do texto do sidebar */
+@utility sidebar-text-fade {
+  @apply transition-opacity duration-300;
+
+  &.hidden-text {
+    @apply opacity-0;
+  }
+}
+
+/* Transição de cores suave */
+@utility color-smooth {
+  @apply transition-colors duration-200;
+}
+
+/* ============================================================================
+   ACESSIBILIDADE - Respeitar preferência de movimento reduzido
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+
+  ::view-transition-group(sidebar),
+  ::view-transition-group(topbar) {
+    animation: none;
+  }
+}
+
+/* ============================================================================
+   COMPONENTES
+   ============================================================================ */
+
+@layer components {
+  [data-app-shell] > aside a { color: inherit; text-decoration: none; }
+  [data-app-shell] > header a { color: inherit; text-decoration: none; }
+  [data-app-shell] > aside :is(h3, p), [data-app-shell] > header h2 { margin: 0; }
+  
+  /* Otimização de performance */
+  [data-app-shell] > aside {
+    contain: layout style paint;
+  }
+  
+  [data-app-shell] > header {
+    contain: layout style;
+  }
+}
+
+@utility dot-grid {
+  background-image: radial-gradient(var(--bp-border) 1px, transparent 1px);
+  background-size: 20px 20px;
+}

@@ -1,6 +1,6 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { renderRouter } from '../../test/renderRouter';
 import { HTTPClient } from '../../services/client';
 import { Cadastro } from './Cadastro';
 
@@ -11,19 +11,12 @@ beforeEach(() => {
     HTTPClient.post.mockResolvedValue({ data: { id: 1 } });
 });
 
-function prepararCadastro(senha, confirmacao = senha) {
-    render(
-        <MemoryRouter initialEntries={['/cadastro']}>
-            <Routes>
-                <Route path="/cadastro" element={<Cadastro />} />
-                <Route path="/" element={<h1>Login</h1>} />
-            </Routes>
-        </MemoryRouter>
-    );
+async function prepararCadastro(senha, confirmacao = senha) {
+    await renderRouter({ '/cadastro': Cadastro, '/login': () => <h1>Login</h1> }, '/cadastro');
     fireEvent.change(screen.getByRole('textbox', { name: 'Nome' }), { target: { value: 'Pessoa Teste' } });
     fireEvent.change(screen.getByRole('textbox', { name: 'E-mail' }), { target: { value: 'cadastro@example.invalid' } });
-    fireEvent.change(screen.getByLabelText('Senha', { exact: true }), { target: { value: senha } });
-    fireEvent.change(screen.getByLabelText('Confirme sua senha'), { target: { value: confirmacao } });
+    await userEvent.type(screen.getByLabelText('Senha', { exact: true }), senha);
+    await userEvent.type(screen.getByLabelText('Confirme sua senha'), confirmacao);
 }
 
 function enviarFormulario() {
@@ -31,8 +24,8 @@ function enviarFormulario() {
     fireEvent.submit(screen.getByRole('form', { name: 'Crie sua conta' }));
 }
 
-test.each([5, 41])('rejeita senha de %i caracteres antes de chamar a API', (tamanho) => {
-    prepararCadastro('a'.repeat(tamanho));
+test.each([5, 41])('rejeita senha de %i caracteres antes de chamar a API', async (tamanho) => {
+    await prepararCadastro('a'.repeat(tamanho));
     enviarFormulario();
     expect(screen.getByRole('alert')).toHaveTextContent('A senha deve ter entre 6 e 40 caracteres.');
     expect(HTTPClient.post).not.toHaveBeenCalled();
@@ -40,8 +33,8 @@ test.each([5, 41])('rejeita senha de %i caracteres antes de chamar a API', (tama
 
 test.each([6, 40])('envia senha de %i caracteres e confirmação, depois retorna ao login', async (tamanho) => {
     const senha = 'a'.repeat(tamanho);
-    prepararCadastro(senha);
-    userEvent.click(screen.getByRole('button', { name: 'Criar conta' }));
+    await prepararCadastro(senha);
+    await userEvent.click(screen.getByRole('button', { name: 'Criar conta' }));
     expect(HTTPClient.post).toHaveBeenCalledWith('/Usuario', {
         Nome: 'Pessoa Teste',
         Email: 'cadastro@example.invalid',
@@ -55,15 +48,15 @@ test.each([6, 40])('envia senha de %i caracteres e confirmação, depois retorna
 test.each([
     ['', 'Confirme sua senha.'],
     ['diferente', 'As senhas não coincidem.'],
-])('rejeita confirmação ausente ou divergente (%s)', (confirmacao, mensagem) => {
-    prepararCadastro('abcdef', confirmacao);
+])('rejeita confirmação ausente ou divergente (%s)', async (confirmacao, mensagem) => {
+    await prepararCadastro('abcdef', confirmacao);
     enviarFormulario();
     expect(screen.getByRole('alert')).toHaveTextContent(mensagem);
     expect(HTTPClient.post).not.toHaveBeenCalled();
 });
 
-test('campos de senha têm limites, preenchimento automático e visibilidade independente', () => {
-    prepararCadastro('abcdef');
+test('campos de senha têm limites, preenchimento automático e visibilidade independente', async () => {
+    await prepararCadastro('abcdef');
     const senha = screen.getByLabelText('Senha', { exact: true });
     const confirmacao = screen.getByLabelText('Confirme sua senha');
     for (const campo of [senha, confirmacao]) {
@@ -74,7 +67,7 @@ test('campos de senha têm limites, preenchimento automático e visibilidade ind
         expect(campo).toHaveAttribute('type', 'password');
     }
     expect(senha).toHaveAccessibleDescription(/6 a 40 caracteres/);
-    userEvent.click(screen.getByRole('button', { name: 'Mostrar confirmação da senha' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Mostrar confirmação da senha' }));
     expect(confirmacao).toHaveAttribute('type', 'text');
     expect(senha).toHaveAttribute('type', 'password');
 });
@@ -85,8 +78,8 @@ test.each([
     [{ errors: { ConfirmarSenha: ['As senhas não coincidem.'] } }, 'As senhas não coincidem.'],
 ])('apresenta validações HTTP 400 sem renderizar objetos (%j)', async (data, mensagem) => {
     HTTPClient.post.mockRejectedValue({ response: { status: 400, data } });
-    prepararCadastro('abcdef');
-    userEvent.click(screen.getByRole('button', { name: 'Criar conta' }));
+    await prepararCadastro('abcdef');
+    await userEvent.click(screen.getByRole('button', { name: 'Criar conta' }));
     expect(await screen.findByRole('alert')).toHaveTextContent(mensagem);
     expect(screen.getByRole('button', { name: 'Criar conta' })).toBeEnabled();
 });
@@ -96,8 +89,8 @@ test.each([undefined, { status: 500, data: { message: 'Detalhes internos reserva
         const log = jest.spyOn(console, 'error').mockImplementation(() => {});
         try {
             HTTPClient.post.mockRejectedValue({ response, config: { data: 'credencial-ficticia' } });
-            prepararCadastro('abcdef');
-            userEvent.click(screen.getByRole('button', { name: 'Criar conta' }));
+            await prepararCadastro('abcdef');
+            await userEvent.click(screen.getByRole('button', { name: 'Criar conta' }));
             expect(await screen.findByRole('alert')).toHaveTextContent('Não foi possível criar sua conta. Tente novamente.');
             expect(log).not.toHaveBeenCalled();
         } finally {
